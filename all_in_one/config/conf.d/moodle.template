@@ -1,0 +1,30 @@
+server {
+    server_name $MOODLE_HOST;
+    listen $MOODLE_PORT;
+
+    root /var/www/html;
+    index index.php index.html index.htm;
+    fastcgi_keep_conn on;
+
+    location / {
+        try_files $uri $uri/index.php;
+        rewrite ^/(.*.php)(/)(.*)$ /$1?file=/$3 last;
+    }
+
+    location ~ ^(.+\.php)(.*)$ {
+        fastcgi_split_path_info  ^(.+\.php)(.*)$;
+        fastcgi_index index.php;
+        fastcgi_pass unix:/run/php-fpm.sock;
+        include /etc/nginx/mime.types;
+        include fastcgi_params;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 256 4k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+        client_max_body_size 100M;
+    }
+
+    add_header 'Access-Control-Allow-Origin' "*";
+}
