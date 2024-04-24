@@ -1,9 +1,9 @@
 This is a simple all-in-one Moodle image that runs with MariaDB and Nginx. Moodle is downloaded during the building of the image and only unpacked and installed when the container starts the first time. If necessary, the download path may need to be updated.
 
-> [!NOTE] Version
+> [!NOTE]
 > **`Moodle 4.3`**
 
-> [!NOTE] Port changes
+> [!NOTE]
 > If the app is to run on a different port, all port references must be adjusted.
 >
 > ```docker
